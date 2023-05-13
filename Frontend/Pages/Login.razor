@@ -1,0 +1,64 @@
+@page "/login"
+@layout LoginLayout
+
+@using System.ComponentModel.DataAnnotations
+
+<style>
+  .edit-form, .new-container{
+  display: flex;
+  justify-content: center;
+}
+  .login-card{
+    padding: 30px;
+  }
+  .new-container{
+  font-size: 15px;
+  }
+  .new-link{
+    margin-left: 20px;
+  }
+
+</style>
+
+<EditForm Model="@model" OnValidSubmit="OnValidSubmit" class="edit-form">
+<DataAnnotationsValidator/>
+    <MudItem xs="12" sm="7">
+        <MudCard Class="login-card">
+            <MudCardContent>
+                <MudTextField Label="First name" @bind-Value="model.Username" For="@(() => model.Username)"/>
+                <MudTextField Label="Password" Class="mt-3" @bind-Value="model.Password" For="@(() => model.Password)" InputType="InputType.Password"/>
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Login</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+</EditForm>
+
+<MudContainer Class="new-container">
+  <MudText>New here?</MudText>
+  <MudLink Class="new-link" Href="#" Underline="Underline.None">Create new account</MudLink>
+</MudContainer>
+@code {
+    LoginModel model = new LoginModel();
+    bool success;
+
+    public class LoginModel
+    {
+        [Required]
+        [StringLength(8, ErrorMessage = "Name length can't be more than 8.")]
+        public string Username { get; set; }
+
+        [Required]
+        [StringLength(30, ErrorMessage = "Password must be at least 8 characters long.", MinimumLength = 8)]
+        public string Password { get; set; }
+
+    }
+
+    private void OnValidSubmit(EditContext context)
+    {
+        success = true;
+        StateHasChanged();
+    }
+
+}
