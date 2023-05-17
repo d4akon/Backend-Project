@@ -1,0 +1,59 @@
+@page "/register"
+
+@layout LoginLayout
+
+@inject ISnackbar Snackbar
+@inject NavigationManager Navigation
+
+@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
+@using Frontend.Models
+
+<EditForm Model="@user" OnValidSubmit="OnValidSubmit">
+<DataAnnotationsValidator/>
+        <MudCard>
+            <MudCardContent>
+                <MudTextField Label="Username" HelperText="Max. 8 characters"
+                              @bind-Value="user.Username" For="@(() => user.Username)"/>
+                <MudTextField Label="Email" Class="mt-3"
+                              @bind-Value="user.Email" For="@(() => user.Email)"/>
+                <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
+                              @bind-Value="user.Password" For="@(() => user.Password)" InputType="InputType.Password"/>
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">
+                    @if (_processing)
+                    {
+                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                        <MudText Class="ms-2">Processing</MudText>
+                    }
+                    else
+                    {
+                        <MudText>Register</MudText>
+                    }
+                </MudButton>
+            </MudCardActions>
+        </MudCard>
+</EditForm>
+@code {
+    UserModel user {get;set;}
+    private bool _processing = false;
+    protected override void OnInitialized()
+    {
+        user = new UserModel();
+        base.OnInitialized();
+    }
+
+    
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+         _processing = true;
+        await Task.Delay(3000);
+        _processing = false;
+        Snackbar.Add("You've created new account. Now you can login.", Severity.Success);
+        Navigation.NavigateTo("login");
+    }
+
+}
+

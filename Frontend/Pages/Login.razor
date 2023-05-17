@@ -12,7 +12,8 @@
     padding: 30px;
   }
   .new-container{
-  font-size: 15px;
+    margin-top: 10px;
+    font-size: 15px;
   }
   .new-link{
     margin-left: 20px;
@@ -37,7 +38,7 @@
 
 <MudContainer Class="new-container">
   <MudText>New here?</MudText>
-  <MudLink Class="new-link" Href="#" Underline="Underline.None">Create new account</MudLink>
+  <MudLink Class="new-link" Href="register" Underline="Underline.None">Create new account</MudLink>
 </MudContainer>
 @code {
     LoginModel model = new LoginModel();
@@ -55,7 +56,7 @@
 
     }
 
-    private void OnValidSubmit(EditContext context)
+    private async Task OnValidSubmit(EditContext context)
     {
         success = true;
         StateHasChanged();
